@@ -1,51 +1,42 @@
 import { useState } from 'react';
-import { CounterInput } from './CounterInput'
+
 import { Button } from './Button';
+import { CounterItem } from './CounterItem';
 
 function Counter() {
-  const [count, setCount] = useState(0);
+  const [counters, setCounters] = useState([])
 
-  const increment = () => {
-    if (count < 10) {
-      setCount(count + 1);
-    }
+  const handleNewCounter = () => {
+    const rnd = Math.round(Math.random() * 10)
+    const arr = [
+      {count: rnd, id: Math.random()},
+      ...counters
+    ]
+    setCounters(arr)
   }
 
-  const decrement = () => {
-    if (count > 0) {
-      setCount(count - 1);
-    }
+  const deleteCounter = (id) => {
+    const items = counters.filter(count => count.id !== id);
+    setCounters(items);
   }
 
   return (
     <div className="container">
       <div className="row my-2">
         <div className="col-2 d-flex justify-content-center">
-          <Button
-            disabled={count <= 0}
-            onClick={decrement}
-          >
-            -
-          </Button>
-        </div>
-
-        <div className="col d-flex justify-content-center">
-          <CounterInput
-            value={count}
-            handleUpdate={setCount}
-            error={count < 0 || count > 10}
-          />
-        </div>
-
-        <div className="col-2 d-flex justify-content-center">
-          <Button
-            disabled={count >= 10}
-            onClick={increment}
-          >
-            +
+          <Button onClick={handleNewCounter}>
+            Add new counter
           </Button>
         </div>
       </div>
+      {counters.map((i, idx) =>
+        <CounterItem
+          count={i.count}
+          id={i.id}
+          handleDelete={deleteCounter}
+          key={i.id}
+        />
+      )}
     </div>
   );
 }
