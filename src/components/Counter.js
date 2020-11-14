@@ -20,6 +20,22 @@ function Counter() {
     setCounters(items);
   }
 
+  const renderCounters = () => {
+    if (counters.length) {
+      return counters.map((i, idx) =>
+        <CounterItem
+          count={i.count}
+          id={i.id}
+          handleDelete={deleteCounter}
+          key={i.id}
+        />
+      )
+    }
+    return <p>
+      You have no any counters.
+    </p>
+  }
+
   return (
     <div className="container">
       <div className="row my-2">
@@ -29,14 +45,15 @@ function Counter() {
           </Button>
         </div>
       </div>
-      {counters.map((i, idx) =>
+      {renderCounters()}
+      {/* {counters.length > 0 ? counters.map((i, idx) =>
         <CounterItem
           count={i.count}
           id={i.id}
           handleDelete={deleteCounter}
           key={i.id}
         />
-      )}
+      ): <p>You have no any counters.</p>} */}
     </div>
   );
 }
