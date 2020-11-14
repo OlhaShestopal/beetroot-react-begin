@@ -6,7 +6,7 @@ function CounterInput(props) {
     <input
       value={value}
       className={`form-control ${error && "is-invalid"}`}
-      onChange={(e) => handleUpdate(e.target.value)}
+      onChange={(e) => handleUpdate(+e.target.value)}
     />
   )
 }
