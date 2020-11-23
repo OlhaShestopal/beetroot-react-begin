@@ -1,21 +1,23 @@
-import { useState } from 'react';
 import { CounterInput } from './CounterInput';
 import { Button } from './Button';
 
 function CounterItem(props) {
-  const {count: defaultValue, handleDelete, id} = props;
-  const [count, setCount] = useState(defaultValue);
+  const { count, handleDelete, id, handleUpdate } = props;
 
-  const increment = () => {
+  const increment = (count) => {
     if (count < 10) {
-      setCount(count + 1);
+      handleUpdate(count)
     }
   }
 
-  const decrement = () => {
+  const decrement = (count) => {
     if (count > 0) {
-      setCount(count - 1);
+      handleUpdate(count)
     }
+  }
+
+  const update = (count) => {
+    // code ...
   }
 
   return (
@@ -23,7 +25,7 @@ function CounterItem(props) {
       <div className="col-2 d-flex justify-content-center">
         <Button
           disabled={count <= 0}
-          onClick={decrement}
+          onClick={() => decrement(count - 1)}
         >
           -
         </Button>
@@ -32,7 +34,7 @@ function CounterItem(props) {
       <div className="col d-flex justify-content-center">
         <CounterInput
           value={count}
-          handleUpdate={setCount}
+          handleUpdate={update}
           error={count < 0 || count > 10}
         />
       </div>
@@ -40,7 +42,7 @@ function CounterItem(props) {
       <div className="col-2 d-flex justify-content-center">
         <Button
           disabled={count >= 10}
-          onClick={increment}
+          onClick={() => increment(count + 1)}
         >
           +
         </Button>

@@ -9,10 +9,20 @@ function Counter() {
   const handleNewCounter = () => {
     const rnd = Math.round(Math.random() * 10)
     const arr = [
-      {count: rnd, id: Math.random()},
+      { count: rnd, id: Math.random() },
       ...counters
     ]
     setCounters(arr)
+  }
+
+  const updateCounter = ({ id, count }) => {
+    const state = [...counters]
+    const idx = state.findIndex(i => i.id === id)
+    state[idx] = {
+      ...state[idx],
+      count
+    }
+    setCounters(state)
   }
 
   const deleteCounter = (id) => {
@@ -20,20 +30,8 @@ function Counter() {
     setCounters(items);
   }
 
-  const renderCounters = () => {
-    if (counters.length) {
-      return counters.map((i, idx) =>
-        <CounterItem
-          count={i.count}
-          id={i.id}
-          handleDelete={deleteCounter}
-          key={i.id}
-        />
-      )
-    }
-    return <p>
-      You have no any counters.
-    </p>
+  const totalAmount = () => {
+    return counters.reduce((acc, current) => acc + current.count, 0)
   }
 
   return (
@@ -45,15 +43,19 @@ function Counter() {
           </Button>
         </div>
       </div>
-      {renderCounters()}
-      {/* {counters.length > 0 ? counters.map((i, idx) =>
+      {counters.length > 0 ? counters.map((i, idx) =>
         <CounterItem
           count={i.count}
           id={i.id}
           handleDelete={deleteCounter}
+          handleUpdate={count => updateCounter({ id: i.id, count })}
           key={i.id}
         />
-      ): <p>You have no any counters.</p>} */}
+      ) : <p>You have no any counters.</p>}
+
+      <p>
+        Total counter: {totalAmount()}
+      </p>
     </div>
   );
 }
