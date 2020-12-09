@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Item } from "./Item";
 import { users as mocks } from './mock';
 
 function App() {
@@ -30,19 +29,24 @@ function App() {
         Load users
       </button>
 
-      <ul>
-        {users.length > 0
-          ? users.map(user =>
-            <Item
-              key={user.id}
-              user={user}
-              handleUpdate={updateUser}
-              handleDelete={deleteUser}
-            />
-          )
-          : <p>You have no any users in your database.</p>
-        }
-      </ul>
+      {<ul>
+        {users.length > 0 ? users.map(
+          (user, idx) =>
+            <li key={user.id}>
+              <span>ID: {user.id}</span>
+              <span>Position {idx}</span>
+              <input
+                value={user.name}
+                onInput={event => handleInput(event.target.value, user.id)}
+              />
+              <button onClick={() => handleDelete(user.id)}>
+                Delete
+              </button>
+            </li>
+        ) : <li>You have no any users in your database.</li>}
+      </ul>}
+
+
     </section>
   )
 }
