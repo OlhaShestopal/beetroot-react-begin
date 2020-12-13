@@ -1,50 +1,43 @@
 import { useState } from "react";
-import { Item } from "./Item";
-import { users as mocks } from './mock';
+import { Notes } from './components/Notes';
+import { Reminders } from './components/Reminders';
 
 function App() {
-  const [users, setUsers] = useState([]);
-
-  const deleteUser = id => {
-    const state = users.filter(user => user.id !== id);
-    setUsers(state);
-  }
-
-  const updateUser = ({ name, id }) => {
-    const state = [...users];
-    const idx = users.findIndex(user => user.id === id);
-
-    const user = {
-      ...users[idx],
-      name
-    };
-
-    state[idx] = user;
-    setUsers(state);
-  }
+  const [currentPart, setCurrentPart] = useState("notes");
 
   return (
-    <section>
-      <h1>List of Users</h1>
-      <button onClick={() => setUsers(mocks)}>
-        Load users
-      </button>
+    <>
+      <header className="app-header py-2">
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col">
+              <button
+                type="button"
+                className="btn btn-outline-primary w-100"
+                onClick={() => setCurrentPart("notes")}
+              >
+                Notes
+              </button>
+            </div>
 
-      <ul>
-        {users.length > 0
-          ? users.map(user =>
-            <Item
-              key={user.id}
-              user={user}
-              handleUpdate={updateUser}
-              handleDelete={deleteUser}
-            />
-          )
-          : <p>You have no any users in your database.</p>
-        }
-      </ul>
-    </section>
+            <div className="col">
+              <button
+                type="button"
+                className="btn btn-outline-primary w-100"
+                onClick={() => setCurrentPart("reminders")}
+              >
+                Reminders
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {currentPart === "notes" ? <Notes /> : <Reminders />}
+    </>
   )
 }
 
-export default App;
+export {
+  App
+};
